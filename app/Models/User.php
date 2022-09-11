@@ -18,6 +18,11 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
+    public const ROLE_ENUM = [
+        'comprador' => 1,
+        'fornecedor' => 2,
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -27,6 +32,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -58,4 +64,16 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function getRoleString()
+    {
+        switch ($this->role) {
+            case User::ROLE_ENUM['comprador']:
+                return 'comprador';
+                break;
+            case User::ROLE_ENUM['fornecedor']:
+                return 'fornecedor';
+                break;
+        }
+    }
 }

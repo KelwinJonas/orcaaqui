@@ -11,6 +11,7 @@ import TextInput from '@/Components/TextInput.vue';
 const form = useForm({
     name: '',
     email: '',
+    role: '',
     password: '',
     password_confirmation: '',
     terms: false,
@@ -56,6 +57,21 @@ const submit = () => {
                     required
                 />
                 <InputError class="mt-2" :message="form.errors.email" />
+            </div>
+
+            <div class="mt-4">
+                <InputLabel for="role" value="Perfil" />
+                <select id="role"
+                    v-model="form.role"
+                    type="select"
+                    class="mt-1 block w-full"
+                    required
+                    autocomplete="role" >
+                    <option disabled value="">Selecione o tipo de usuário</option>
+                    <option :value=1>Comprador</option>
+                    <option :value=2>Fornecedor</option>
+                </select>
+                <InputError class="mt-2" :message="form.errors.role" />
             </div>
 
             <div class="mt-4">
