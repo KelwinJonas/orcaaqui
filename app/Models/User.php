@@ -65,6 +65,11 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    public function produtos()
+    {
+        return $this->hasMany(Produto::class);
+    }
+
     public function getRoleString()
     {
         switch ($this->role) {
