@@ -24,6 +24,6 @@ class Produto extends Model
 
     public function categoria()
     {
-        return $this->hasOne(Categoria::class);
+        return $this->belongsTo(Categoria::class);
     }
 }

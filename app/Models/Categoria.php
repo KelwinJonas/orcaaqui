@@ -15,6 +15,6 @@ class Categoria extends Model
 
     public function user()
     {
-        return $this->belongsToMany(Produto::class);
+        return $this->hasMany(Produto::class);
     }
 }

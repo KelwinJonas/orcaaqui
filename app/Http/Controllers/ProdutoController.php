@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProdutoRequest;
 use App\Http\Requests\UpdateProdutoRequest;
+use App\Models\Categoria;
 use App\Models\Produto;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
 
 class ProdutoController extends Controller
 {
@@ -15,7 +19,9 @@ class ProdutoController extends Controller
      */
     public function index()
     {
-        //
+        $categorias = Categoria::all();
+        $produtos = Produto::where('user_id', Auth::user()->id)->with('categoria')->orderBy('nome')->paginate(10);
+        return Inertia::render('Produtos', ['produtos' => $produtos, 'categorias' => $categorias]);
     }
 
     /**
@@ -36,7 +42,14 @@ class ProdutoController extends Controller
      */
     public function store(StoreProdutoRequest $request)
     {
-        //
+        $validated = $request->validated();
+        $validated['imagem'] = '/';
+        $produto = new Produto($validated);
+        $produto->user()->associate(Auth::user());
+        $produto->categoria()->associate($validated['categoria']);
+        $produto->save();
+
+        return Redirect::back()->with('message', 'Produto salvo com sucesso!');
     }
 
     /**
@@ -70,7 +83,18 @@ class ProdutoController extends Controller
      */
     public function update(UpdateProdutoRequest $request, Produto $produto)
     {
-        //
+        $validated = $request->validated();
+
+        if($validated['categoria'] != $produto->categoria_id) {
+            $produto->categoria()->dissociate();
+            $produto->categoria()->associate($validated['categoria']);
+        }
+        $produto->save();
+
+        $produto->fill($validated);
+        $produto->save();
+
+        return Redirect::back()->with('message', 'Produto atualizado com sucesso!');
     }
 
     /**
@@ -81,6 +105,8 @@ class ProdutoController extends Controller
      */
     public function destroy(Produto $produto)
     {
-        //
+        $produto->delete();
+
+        return Redirect::back()->with('message', 'Produto deletado.');
     }
 }
