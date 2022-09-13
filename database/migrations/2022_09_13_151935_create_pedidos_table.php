@@ -15,8 +15,9 @@ return new class extends Migration
     {
         Schema::create('pedidos', function (Blueprint $table) {
             $table->id();
-            $table->string('endereco');
+            $table->boolean('sacola')->default(true);
             $table->smallInteger('status');
+            $table->string('endereco');
             $table->date('data_prevista');
             $table->date('data_entrega')->nullable();
             $table->foreignId('user_id')->constrained();

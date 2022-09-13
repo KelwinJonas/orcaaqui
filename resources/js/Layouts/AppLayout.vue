@@ -49,14 +49,20 @@ const logout = () => {
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
+                                <NavLink v-if="$page.props.user" :href="route('welcome')" :active="route().current('welcome')">
+                                    Início
                                 </NavLink>
-                                <NavLink v-if="$page.props.user.role == 2" :href="route('produtos.index')" :active="route().current('produtos.index')">
+                                <NavLink v-if="$page.props.user && $page.props.user.role == 2" :href="route('produtos.index')" :active="route().current('produtos.index')">
                                     Produtos
                                 </NavLink>
-                                <NavLink v-if="$page.props.user.role == 1" :href="route('pedidos.index')" :active="route().current('pedidos.index')">
+                                <NavLink v-if="$page.props.user && $page.props.user.role == 1" :href="route('pedidos.index')" :active="route().current('pedidos.index')">
                                     Pedidos
+                                </NavLink>
+                                <NavLink v-if="! $page.props.user" :href="route('login')" :active="route().current('login')">
+                                    Entrar
+                                </NavLink>
+                                <NavLink v-if="! $page.props.user" :href="route('register')" :active="route().current('register')">
+                                    Registrar-se
                                 </NavLink>
                             </div>
                         </div>
@@ -140,7 +146,7 @@ const logout = () => {
                                         </button>
 
                                         <span v-else class="inline-flex rounded-md">
-                                            <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition">
+                                            <button v-if="$page.props.user" type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition">
                                                 {{ $page.props.user.name }}
 
                                                 <svg
@@ -226,7 +232,7 @@ const logout = () => {
                                 <img class="h-10 w-10 rounded-full object-cover" :src="$page.props.user.profile_photo_url" :alt="$page.props.user.name">
                             </div>
 
-                            <div>
+                            <div v-if="$page.props.user">
                                 <div class="font-medium text-base text-gray-800">
                                     {{ $page.props.user.name }}
                                 </div>
