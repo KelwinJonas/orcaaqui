@@ -52,8 +52,11 @@ const logout = () => {
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
-                                <NavLink :href="route('produtos.index')" :active="route().current('produtos.index')">
+                                <NavLink v-if="$page.props.user.role == 2" :href="route('produtos.index')" :active="route().current('produtos.index')">
                                     Produtos
+                                </NavLink>
+                                <NavLink v-if="$page.props.user.role == 1" :href="route('pedidos.index')" :active="route().current('pedidos.index')">
+                                    Pedidos
                                 </NavLink>
                             </div>
                         </div>

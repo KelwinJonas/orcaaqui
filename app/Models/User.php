@@ -81,4 +81,12 @@ class User extends Authenticatable
                 break;
         }
     }
+
+    public function isFornecedor(){
+        return $this->role == User::ROLE_ENUM['fornecedor'];
+    }
+
+    public function isComprador(){
+        return $this->role == User::ROLE_ENUM['comprador'];
+    }
 }

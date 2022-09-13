@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProdutoController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -34,4 +35,5 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
     Route::resource('produtos', ProdutoController::class);
+    Route::resource('pedidos', PedidoController::class);
 });
