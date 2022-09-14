@@ -8,6 +8,9 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import IncrementButton from '../Components/IncrementButton.vue';
+import TextInput from '../../../vendor/laravel/jetstream/stubs/inertia/resources/js/Components/TextInput.vue';
+import AdicionarButton from '../Components/AdicionarButton.vue';
 
 defineProps({
     title: String,
@@ -137,10 +140,8 @@ const logout = () => {
                                 </Dropdown>
                             </div>
 
-                            <div class="ml-3 relative right">
-                                <NavLink v-if="$page.props.user" @click="open_cart()">
-                                    Carrinho
-                                </NavLink>
+                            <div @click="open_cart()" class="ml-3 relative right inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition cursor-pointer">
+                                Carrinho
                             </div>
 
                             <!-- Settings Dropdown -->
@@ -325,35 +326,70 @@ const logout = () => {
                 <slot />
             </main>
         </div>
-        <div id="cart" class="cart" open="true">
+        <div id="cart" class="cart" open="false">
+            <IncrementButton class="text-xl bg-red-500" @click="open_cart()">
+            X
+            </IncrementButton>
             <div
-                        class="grid grid-cols-1 gap-4 lg:grid-cols-3 sm:grid-cols-2 ">
-                        <div v-for="produto in $page.props.carrinho.produtos"
-                        :key="produto.id"
-                        class="w-full px-4 lg:px-0">
-                            <div class="p-3 bg-white rounded shadow-md">
-                            <div class="">
-                                <div class="relative w-full mb-3 h-62 lg:mb-0">
-                                <img src="https://cdn.pixabay.com/photo/2018/02/25/07/15/food-3179853__340.jpg" alt="Just a flower"
-                                    class="object-fill w-full h-full rounded">
+                class="scroll justify-items-center grid grid-cols-1 lg:grid-cols-1 sm:grid-cols-2 ">
+                <div v-for="produto in $page.props.carrinho.produtos"
+                :key="produto.id"
+                class="w-full px-4 lg:px-0 mt-2">
+                    <div class="p-3 bg-white border rounded shadow-md">
+                        <div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <img src="https://cdn.pixabay.com/photo/2018/02/25/07/15/food-3179853__340.jpg" alt="Just a flower"
+                                        class="object-fill w-full h-full rounded">
                                 </div>
-                                <div class="flex-auto p-2 justify-evenly">
-                                <div class="flex flex-wrap ">
-                                    <div class="flex items-center justify-between w-full min-w-0 ">
-                                    <h2 class="mr-auto text-2xl font-extrabold ">
-                                        {{produto.nome}}
-                                    </h2>
+
+                                <div class="grid grid-cols-2 gap-1">
+                                    <div>
+                                        <h2 class="text-base font-extrabold ">
+                                            {{produto.nome}}
+                                        </h2>
+                                        <IncrementButton @click="increment_decrement($page.props.carrinho.pedido, produto, -1)">
+                                            -
+                                        </IncrementButton>
+                                        <TextInput
+                                            id="quantidade-{{produto}}"
+                                            v-model="produto.quantidade"
+                                            type="number"
+                                            disabled
+                                            step="1"
+                                            min="1"
+                                            max="{{produto.maximo}}"
+                                            class="shadow appearance-none text-center rounded w-2/5 px-0 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                            autocomplete="new-quantidade"
+                                        />
+                                        <IncrementButton @click="increment_decrement($page.props.carrinho.pedido, produto, 1)">
+                                            +
+                                        </IncrementButton>
+                                    </div>
+                                    <div>
+                                        <div class="text-green text-lg font-bold">R${{ produto.valor*produto.quantidade }}</div>
                                     </div>
                                 </div>
-                                <div class="text-green mt-1 text-xl font-bold">R${{ produto.valor }}</div>
-                                <div class="text-muted">
-                                    no boleto ou depósito. Compre em até 6x de R${{ (produto.valor/6).toFixed(2) }} sem juros
-                                </div>
-                                </div>
-                            </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="bg-white">
+                <div class="grid px-4 py-4 grid-cols-2 gap-1 text-xl text-red-500 font-extrabold">
+                    <div>
+                        Total
+                    </div>
+                    <div class="text-right">
+                        R$ {{$page.props.carrinho.total}}
+                    </div>
+                </div>
+                <div class="px-4 py-4">
+                    <AdicionarButton class="w-full h-10">
+                        FINALIZAR COMPRA
+                    </AdicionarButton>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -369,8 +405,12 @@ const logout = () => {
             } else {
                 carrinho.setAttribute("open", "true");
             }
-            console.log(carrinho.getAttribute("open"));
-        }
-    }
+        },
+        increment_decrement: function (pedido, produto, valor) {
+            produto._method = 'PUT';
+            produto.soma = valor;
+            this.$inertia.post('/pedidos/' + pedido.id, produto)
+        },
+}
 }
 </script>

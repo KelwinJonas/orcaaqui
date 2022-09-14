@@ -54,51 +54,17 @@ import AdicionarButton from '../Components/AdicionarButton.vue';
     props: {
       produtos: Object,
     },
-    data() {
-        return {
-            editMode: false,
-            isOpen: false,
-            isDelete: false,
-            form: {
-                nome: null,
-                valor: null,
-                quantidade: null,
-                categoria: null,
-                descricao: null,
-            },
-            formDelete: {
-                nome: null,
-                id: null,
-            }
-        }
-    },
     methods: {
         add_cart: function (produto) {
             this.$inertia.post('/pedidos', produto)
+            this.open_cart();
         },
-        edit: function (produto) {
-            this.form = Object.assign({}, produto);
-            this.editMode = true;
-            this.openModal();
+        open_cart: function () {
+            var carrinho = document.getElementById("cart");
+            if (carrinho.getAttribute("open") == "false") {
+                carrinho.setAttribute("open", "true");
+            }
         },
-        deletar: function (produto) {
-            this.formDelete = Object.assign({}, produto);
-            this.isDelete = true;
-        },
-        update: function (produto) {
-            produto._method = 'PUT';
-            this.$inertia.post('/produtos/' + produto.id, produto)
-            this.reset();
-            this.closeModal();
-            this.editMode = false;
-        },
-        destroy: function (produto) {
-            produto._method = 'DELETE';
-            this.$inertia.delete((route('produtos.destroy', produto.id)))
-            this.reset();
-            this.closeModal();
-            this.closeDelete();
-        }
     }
     }
 </script>

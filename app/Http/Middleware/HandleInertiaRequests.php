@@ -63,6 +63,13 @@ class HandleInertiaRequests extends Middleware
                             return null;
                         }
                      },
+                     'total' => function () {
+                        if (Auth::user()) {
+                            return  Auth::user()->carrinhoTotal();
+                        } else {
+                            return null;
+                        }
+                     },
                 ];
             },
         ]);

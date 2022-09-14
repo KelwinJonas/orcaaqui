@@ -98,9 +98,21 @@ class PedidoController extends Controller
      * @param  \App\Models\Pedido  $pedido
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePedidoRequest $request, Pedido $pedido)
+    public function update(Request $request, Pedido  $pedido)
     {
-        //
+        $pedidoProduto = $pedido->produtos()->where('produto_id', $request->id)->first();
+        $pedidoProduto = $pedidoProduto->pivot;
+        $pedidoProduto->quantidade += $request->soma;
+        $pedidoProduto->update();
+
+        if ($pedidoProduto->quantidade == 0) {
+            $pedidoProduto->delete();
+        }
+
+        if (! $pedido->produtos()) {
+            $pedido->detele();
+        }
+
     }
 
     /**

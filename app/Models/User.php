@@ -79,16 +79,34 @@ class User extends Authenticatable
     {
         $ultimoPedido = $this->pedidos->last();
         if ($ultimoPedido && $ultimoPedido->sacola) {
-            $produtos = $ultimoPedido->produtos
+            $produtos = $ultimoPedido->produtos;
+            $produtos = $produtos
             ->transform(fn ($produto) => [
-                'id' => $produto->pivot->id,
-                'valor' => $produto->pivot->valor,
+                'id' => $produto->id,
+                'nome' => $produto->nome,
+                'valor' => $produto->valor,
+                'subtotal' => $produto->pivot->quantidade*$produto->valor,
                 'quantidade' => $produto->pivot->quantidade,
+                'maximo' => $produto->quantidade,
             ]);
             return $produtos;
         }
         return null;
 
+    }
+
+    public function carrinhoTotal()
+    {
+        $produtosCarrinho = null;
+        $pedido = $this->pedidos->last();
+        if ($pedido && $pedido->sacola) {
+            $produtosCarrinho = $pedido->produtos;
+        }
+        $soma = 0;
+        foreach ($produtosCarrinho as $produto) {
+            $soma += $produto['subtotal'];
+        }
+        return $soma;
     }
 
     public function getRoleString()
