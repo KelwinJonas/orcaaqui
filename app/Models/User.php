@@ -70,6 +70,27 @@ class User extends Authenticatable
         return $this->hasMany(Produto::class);
     }
 
+    public function pedidos()
+    {
+        return $this->hasMany(Pedido::class);
+    }
+
+    public function produtosCarrinho()
+    {
+        $ultimoPedido = $this->pedidos->last();
+        if ($ultimoPedido && $ultimoPedido->sacola) {
+            $produtos = $ultimoPedido->produtos
+            ->transform(fn ($produto) => [
+                'id' => $produto->pivot->id,
+                'valor' => $produto->pivot->valor,
+                'quantidade' => $produto->pivot->quantidade,
+            ]);
+            return $produtos;
+        }
+        return null;
+
+    }
+
     public function getRoleString()
     {
         switch ($this->role) {

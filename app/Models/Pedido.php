@@ -10,6 +10,7 @@ class Pedido extends Model
     use HasFactory;
 
     public $fillable = [
+        'sacola',
         'endereco',
         'status',
         'data_prevista',
@@ -27,6 +28,16 @@ class Pedido extends Model
     public function produtos()
     {
         return $this->belongsToMany(Produto::class, 'pedido_produto', 'pedido_id', 'produto_id')->withPivot('quantidade', 'valor');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function valorTotal()
+    {
+        $this->produtos()->sum('pedido_produto.valor');
     }
 
     public function getStatusString()

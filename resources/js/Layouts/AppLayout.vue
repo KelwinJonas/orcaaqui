@@ -137,6 +137,12 @@ const logout = () => {
                                 </Dropdown>
                             </div>
 
+                            <div class="ml-3 relative right">
+                                <NavLink v-if="$page.props.user" @click="open_cart()">
+                                    Carrinho
+                                </NavLink>
+                            </div>
+
                             <!-- Settings Dropdown -->
                             <div class="ml-3 relative">
                                 <Dropdown align="right" width="48">
@@ -319,5 +325,52 @@ const logout = () => {
                 <slot />
             </main>
         </div>
+        <div id="cart" class="cart" open="true">
+            <div
+                        class="grid grid-cols-1 gap-4 lg:grid-cols-3 sm:grid-cols-2 ">
+                        <div v-for="produto in $page.props.carrinho.produtos"
+                        :key="produto.id"
+                        class="w-full px-4 lg:px-0">
+                            <div class="p-3 bg-white rounded shadow-md">
+                            <div class="">
+                                <div class="relative w-full mb-3 h-62 lg:mb-0">
+                                <img src="https://cdn.pixabay.com/photo/2018/02/25/07/15/food-3179853__340.jpg" alt="Just a flower"
+                                    class="object-fill w-full h-full rounded">
+                                </div>
+                                <div class="flex-auto p-2 justify-evenly">
+                                <div class="flex flex-wrap ">
+                                    <div class="flex items-center justify-between w-full min-w-0 ">
+                                    <h2 class="mr-auto text-2xl font-extrabold ">
+                                        {{produto.nome}}
+                                    </h2>
+                                    </div>
+                                </div>
+                                <div class="text-green mt-1 text-xl font-bold">R${{ produto.valor }}</div>
+                                <div class="text-muted">
+                                    no boleto ou depósito. Compre em até 6x de R${{ (produto.valor/6).toFixed(2) }} sem juros
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
     </div>
 </template>
+<script>
+    export default {
+    props: {
+    },
+    methods: {
+        open_cart: function () {
+            var carrinho = document.getElementById("cart");
+            if (carrinho.getAttribute("open") == "true") {
+                carrinho.setAttribute("open", "false");
+            } else {
+                carrinho.setAttribute("open", "true");
+            }
+            console.log(carrinho.getAttribute("open"));
+        }
+    }
+}
+</script>

@@ -1,5 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import AdicionarButton from '../Components/AdicionarButton.vue';
 </script>
 
 <template>
@@ -21,7 +22,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                                 <div class="flex-auto p-2 justify-evenly">
                                 <div class="flex flex-wrap ">
                                     <div class="flex items-center justify-between w-full min-w-0 ">
-                                    <h2 class="mr-auto text-lg cursor-pointer hover:text-gray-900 ">
+                                    <h2 class="mr-auto text-2xl font-extrabold ">
                                         {{produto.nome}}
                                     </h2>
                                     </div>
@@ -29,6 +30,11 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                                 <div class="text-green mt-1 text-xl font-bold">R${{ produto.valor }}</div>
                                 <div class="text-muted">
                                     no boleto ou depósito. Compre em até 6x de R${{ (produto.valor/6).toFixed(2) }} sem juros
+                                </div>
+                                <div class="row text-center">
+                                    <AdicionarButton class="w-full h-10" @click="add_cart(produto)">
+                                        COMPRAR
+                                    </AdicionarButton>
                                 </div>
                                 </div>
                             </div>
@@ -48,5 +54,51 @@ import AppLayout from '@/Layouts/AppLayout.vue';
     props: {
       produtos: Object,
     },
+    data() {
+        return {
+            editMode: false,
+            isOpen: false,
+            isDelete: false,
+            form: {
+                nome: null,
+                valor: null,
+                quantidade: null,
+                categoria: null,
+                descricao: null,
+            },
+            formDelete: {
+                nome: null,
+                id: null,
+            }
+        }
+    },
+    methods: {
+        add_cart: function (produto) {
+            this.$inertia.post('/pedidos', produto)
+        },
+        edit: function (produto) {
+            this.form = Object.assign({}, produto);
+            this.editMode = true;
+            this.openModal();
+        },
+        deletar: function (produto) {
+            this.formDelete = Object.assign({}, produto);
+            this.isDelete = true;
+        },
+        update: function (produto) {
+            produto._method = 'PUT';
+            this.$inertia.post('/produtos/' + produto.id, produto)
+            this.reset();
+            this.closeModal();
+            this.editMode = false;
+        },
+        destroy: function (produto) {
+            produto._method = 'DELETE';
+            this.$inertia.delete((route('produtos.destroy', produto.id)))
+            this.reset();
+            this.closeModal();
+            this.closeDelete();
+        }
+    }
     }
 </script>

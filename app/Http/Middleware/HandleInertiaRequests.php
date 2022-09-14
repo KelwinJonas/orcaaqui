@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Inertia\Middleware;
 
@@ -45,6 +46,24 @@ class HandleInertiaRequests extends Middleware
                 return Session::get('errors')
                     ? Session::get('errors')->getBag('default')->getMessages()
                     : (object) [];
+            },
+            'carrinho' => function () {
+                return [
+                    'pedido' => function () {
+                        if (Auth::user()) {
+                            return  Auth::user()->pedidos->last();
+                        } else {
+                            return null;
+                        }
+                     },
+                     'produtos' => function () {
+                        if (Auth::user()) {
+                            return  Auth::user()->produtosCarrinho();
+                        } else {
+                            return null;
+                        }
+                     },
+                ];
             },
         ]);
     }
