@@ -330,6 +330,11 @@ const logout = () => {
             <IncrementButton class="text-xl bg-red-500" @click="open_cart()">
             X
             </IncrementButton>
+            <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md my-3" role="alert" v-if="$page.props.flash.message">
+                <div class="flex">
+                    <p class="text-sm">{{ $page.props.flash.message }}</p>
+                </div>
+            </div>
             <div
                 class="scroll justify-items-center grid grid-cols-1 lg:grid-cols-1 sm:grid-cols-2 ">
                 <div v-for="produto in $page.props.carrinho.produtos"
@@ -371,11 +376,12 @@ const logout = () => {
                                     </div>
                                 </div>
                             </div>
+                            <div class="text-base text-right font-semibold">{{ produto.maximo }} em estoque</div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="bg-white">
+            <div v-if="$page.props.carrinho.pedido" class="bg-white">
                 <div class="grid px-4 py-4 grid-cols-2 gap-1 text-xl text-red-500 font-extrabold">
                     <div>
                         Total
@@ -385,9 +391,9 @@ const logout = () => {
                     </div>
                 </div>
                 <div class="px-4 py-4">
-                    <AdicionarButton class="w-full h-10">
+                    <a :href="'/pedidos/' + $page.props.carrinho.pedido.id + '/finalizar-pedido'" class="rounded-lg bg-gray-200 px-4 py-1">
                         FINALIZAR COMPRA
-                    </AdicionarButton>
+                    </a>
                 </div>
             </div>
         </div>
@@ -410,6 +416,9 @@ const logout = () => {
             produto._method = 'PUT';
             produto.soma = valor;
             this.$inertia.post('/pedidos/' + pedido.id, produto)
+        },
+        finalizar_compra: function (pedido) {
+            this.$inertia.get('/pedidos/' + pedido.id + '/finalizar-pedido', pedido)
         },
 }
 }

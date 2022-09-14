@@ -29,4 +29,7 @@ Route::middleware([
     })->name('dashboard');
     Route::resource('produtos', ProdutoController::class);
     Route::resource('pedidos', PedidoController::class);
+    Route::get('pedidos/{id}/finalizar-pedido', [PedidoController::class, 'finalizarPedido'])->name('finalizar.pedido');
+    Route::get('pedidos/{id}/baixar-nota', [PedidoController::class, 'baixarNota'])->name('baixa.nota.pedido');
+
 });

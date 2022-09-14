@@ -61,7 +61,9 @@
                                                     {{ pedido.status }}
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    <button @click="edit(pedido)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</button>
+                                                    <a v-if="pedido.valor != 0" :href="'/pedidos/' + $page.props.carrinho.pedido.id + '/finalizar-pedido'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                        Nota
+                                                    </a>
                                                 </td>
                                             </tr>
                                         </tbody>

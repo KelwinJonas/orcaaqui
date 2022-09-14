@@ -103,8 +103,10 @@ class User extends Authenticatable
             $produtosCarrinho = $pedido->produtos;
         }
         $soma = 0;
-        foreach ($produtosCarrinho as $produto) {
-            $soma += $produto['subtotal'];
+        if ($produtosCarrinho != null) {
+            foreach ($produtosCarrinho as $produto) {
+                $soma += $produto['subtotal'];
+            }
         }
         return $soma;
     }
