@@ -50,6 +50,7 @@ class PedidoController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('isComprador', User::class);
         $produto = Produto::find($request->id);
         if (! Auth::user()->pedidos->last() || ! Auth::user()->pedidos->last()->sacola) {
             $pedido = new Pedido();
@@ -100,6 +101,7 @@ class PedidoController extends Controller
      */
     public function update(Request $request, Pedido  $pedido)
     {
+        $this->authorize('isComprador', User::class);
         $pedidoProduto = $pedido->produtos()->where('produto_id', $request->id)->first();
         $pedidoProduto = $pedidoProduto->pivot;
         $pedidoProduto->quantidade += $request->soma;

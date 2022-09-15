@@ -5,6 +5,9 @@ import AdicionarButton from '../Components/AdicionarButton.vue';
 
 <template>
     <AppLayout title="Início">
+        <div>
+            <img src="/img/construcao.jpg" alt="">
+        </div>
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
@@ -16,7 +19,7 @@ import AdicionarButton from '../Components/AdicionarButton.vue';
                             <div class="p-3 bg-white rounded shadow-md">
                             <div class="">
                                 <div class="relative w-full mb-3 h-62 lg:mb-0">
-                                <img src="https://cdn.pixabay.com/photo/2018/02/25/07/15/food-3179853__340.jpg" alt="Just a flower"
+                                <img src="https://cdn.pixabay.com/photo/2014/09/13/21/46/milling-444493_960_720.jpg" alt="Produto"
                                     class="object-fill w-full h-full rounded">
                                 </div>
                                 <div class="flex-auto p-2 justify-evenly">
@@ -32,7 +35,7 @@ import AdicionarButton from '../Components/AdicionarButton.vue';
                                     no boleto ou depósito. Compre em até 6x de R${{ (produto.valor/6).toFixed(2) }} sem juros
                                 </div>
                                 <div class="row text-center">
-                                    <AdicionarButton class="w-full h-10" @click="add_cart(produto)">
+                                    <AdicionarButton class="w-full h-10" v-if="$page.props.user && $page.props.user.role == 1" @click="add_cart(produto)">
                                         COMPRAR
                                     </AdicionarButton>
                                 </div>

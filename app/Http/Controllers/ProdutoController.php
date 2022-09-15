@@ -58,6 +58,7 @@ class ProdutoController extends Controller
      */
     public function store(StoreProdutoRequest $request)
     {
+        $this->authorize('isFornecedor', User::class);
         $validated = $request->validated();
         $validated['imagem'] = '/';
         $produto = new Produto($validated);
@@ -99,6 +100,7 @@ class ProdutoController extends Controller
      */
     public function update(UpdateProdutoRequest $request, Produto $produto)
     {
+        $this->authorize('isFornecedor', User::class);
         $validated = $request->validated();
 
         if($validated['categoria'] != $produto->categoria_id) {
