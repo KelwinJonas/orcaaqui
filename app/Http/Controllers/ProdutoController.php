@@ -32,7 +32,7 @@ class ProdutoController extends Controller
      */
     public function todos_produtos()
     {
-        $produtos = Produto::where('quantidade', '>', 0)->with('categoria')->orderBy('nome')->paginate(10);
+        $produtos = Produto::where('quantidade', '>', 0)->with('categoria')->orderBy('nome')->paginate(9);
         return Inertia::render('Welcome', [
             'produtos' => $produtos,
             'canLogin' => Route::has('login'),

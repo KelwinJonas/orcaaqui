@@ -42,9 +42,11 @@
                                             <p class="text-sm">{{ $page.props.errors }}</p>
                                         </div>
                                     </div>
-                                    <PrimaryButton class="ml-4" @click="openModal()">
-                                        Cadastrar novo produto
-                                    </PrimaryButton>
+                                    <div class="row text-right mb-2">
+                                        <PrimaryButton class="ml-4" @click="openModal()">
+                                            Cadastrar novo produto
+                                        </PrimaryButton>
+                                    </div>
                                     <table class="min-w-full divide-y divide-gray-200">
                                         <thead class="bg-gray-50">
                                             <tr>

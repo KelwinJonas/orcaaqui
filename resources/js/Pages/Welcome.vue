@@ -4,7 +4,7 @@ import AdicionarButton from '../Components/AdicionarButton.vue';
 </script>
 
 <template>
-    <AppLayout title="OrçaAqui">
+    <AppLayout title="Início">
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
@@ -27,7 +27,7 @@ import AdicionarButton from '../Components/AdicionarButton.vue';
                                     </h2>
                                     </div>
                                 </div>
-                                <div class="text-green mt-1 text-xl font-bold">R${{ produto.valor }}</div>
+                                <div class="text-blue mt-1 text-xl font-bold">R${{ produto.valor }}</div>
                                 <div class="text-muted">
                                     no boleto ou depósito. Compre em até 6x de R${{ (produto.valor/6).toFixed(2) }} sem juros
                                 </div>
@@ -41,6 +41,9 @@ import AdicionarButton from '../Components/AdicionarButton.vue';
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="px-6 pb-4 bg-white">
+                    <pagination :data="produtos" />
                 </div>
             </div>
         </div>

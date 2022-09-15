@@ -45,7 +45,7 @@ const logout = () => {
                         <div class="flex">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
-                                <Link :href="route('dashboard')">
+                                <Link :href="route('welcome')">
                                     <ApplicationMark class="block h-9 w-auto" />
                                 </Link>
                             </div>
@@ -140,7 +140,7 @@ const logout = () => {
                                 </Dropdown>
                             </div>
 
-                            <div @click="open_cart()" class="ml-3 relative right inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition cursor-pointer">
+                            <div v-if="$page.props.user" @click="open_cart()" class="ml-3 relative right inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition cursor-pointer">
                                 Carrinho
                             </div>
 
@@ -327,9 +327,11 @@ const logout = () => {
             </main>
         </div>
         <div id="cart" class="cart" open="false">
-            <IncrementButton class="text-xl bg-red-500" @click="open_cart()">
-            X
-            </IncrementButton>
+            <div class="text-right">
+                <IncrementButton class="text-xl bg-red-500 pl-1" @click="open_cart()">
+                    X
+                </IncrementButton>
+            </div>
             <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md my-3" role="alert" v-if="$page.props.flash.message">
                 <div class="flex">
                     <p class="text-sm">{{ $page.props.flash.message }}</p>
@@ -372,7 +374,7 @@ const logout = () => {
                                         </IncrementButton>
                                     </div>
                                     <div>
-                                        <div class="text-green text-lg font-bold">R${{ produto.valor*produto.quantidade }}</div>
+                                        <div class="text-blue text-lg font-bold">R${{ produto.valor*produto.quantidade }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -390,8 +392,8 @@ const logout = () => {
                         R$ {{$page.props.carrinho.total}}
                     </div>
                 </div>
-                <div class="px-4 py-4">
-                    <a :href="'/pedidos/' + $page.props.carrinho.pedido.id + '/finalizar-pedido'" class="rounded-lg bg-gray-200 px-4 py-1">
+                <div class="row text-center px-4 py-4">
+                    <a :href="'/pedidos/' + $page.props.carrinho.pedido.id + '/finalizar-pedido'" class="tems-center px-4 py-2 bg-red-500 border border-red-500 rounded-md font-semibold text-xs text-white uppercase tracking-widest shadow-sm hover:text-red-900 hover:bg-white focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 active:text-white active:bg-white-50 disabled:opacity-25 transition w-full h-20">
                         FINALIZAR COMPRA
                     </a>
                 </div>

@@ -1,9 +1,9 @@
-.text-green {
-    color: rgb(0, 206, 0);
+.text-blue {
+    color: #002861;
 }
 
-.bg-green {
-    background-color: rgb(0, 206, 0);
+.bg-blue {
+    background-color: #002861;
 }
 
 .cart {
