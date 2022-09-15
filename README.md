@@ -35,5 +35,5 @@ php artisan db:seed
 email: fornecedor@fornecedor.com
 senha: 12345678
 
-email: comprador@comprador.composer
+email: comprador@comprador.com
 senha: 12345678
