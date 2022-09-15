@@ -65,7 +65,7 @@ const logout = () => {
                                     Entrar
                                 </NavLink>
                                 <NavLink v-if="! $page.props.user" :href="route('register')" :active="route().current('register')">
-                                    Registrar-se
+                                    Cadastrar-se
                                 </NavLink>
                             </div>
                         </div>
@@ -389,7 +389,7 @@ const logout = () => {
                         Total
                     </div>
                     <div class="text-right">
-                        R$ {{$page.props.carrinho.total}}
+                        R$ {{$page.props.carrinho.total.toFixed(2)}}
                     </div>
                 </div>
                 <div class="row text-center px-4 py-4">
